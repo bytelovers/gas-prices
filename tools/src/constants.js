@@ -1,0 +1,46 @@
+export const GAS_PRICES_URL = new URL(
+  "https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/"
+);
+export const GAS_PRICES_FILE = 
+  "file:///Users/e058901/Workspace/sideprojects/gas-prices/tools/source.json";
+
+export const GAS_PRICES_FIELDS = {
+  "% BioEtanol": "bioethanolPercentage",
+  "% Éster metílico": "methylEsterPercentage",
+  "C.P.": "postalCode",
+  "Dirección": "address",
+  "Horario": "schedule",
+  "IDCCAA": "ccaaId",
+  "IDEESS": "eessId",
+  "IDMunicipio": "municipalityId",
+  "IDProvincia": "provinceId",
+  "Latitud": "latitude",
+  "Localidad": "city",
+  "Longitud (WGS84)": "longitude",
+  "Margen": "margin",
+  "Municipio": "municipality",
+  "Precio Biodiesel": "biodieselPrice",
+  "Precio Bioetanol": "bioethanolPrice",
+  "Precio Gas Natural Comprimido": "compressedNaturalGasPrice",
+  "Precio Gas Natural Licuado": "liquefiedNaturalGasPrice",
+  "Precio Gases licuados del petróleo": "liquefiedPetroleumGasesPrice",
+  "Precio Gasoleo A": "gasoleoAPrice",
+  "Precio Gasoleo B": "gasoleoBPrice",
+  "Precio Gasoleo Premium": 'gasoleoPremiumPrice',
+  "Precio Gasolina  98 Protección": "gasoline98ProtectionPrice",
+  "Precio Gasolina  98": "gasoline98Price",
+  "Precio Gasolina 95 E10": 'gasoline95E10Price',
+  "Precio Gasolina 95 E5 Premium": 'gasoline95E5PremiumPrice',
+  "Precio Gasolina 95 E5": 'gasoline95E5Price',
+  "Precio Gasolina 95 Protección": "gasoline95ProtectionPrice",
+  "Precio Gasolina 95": "gasoline95Price",
+  "Precio Gasolina 98 E10": 'gasoline98E10Price',
+  "Precio Gasolina 98 E5": 'gasoline98E5Price',
+  "Precio Hidrogeno": 'hydrogenPrice',
+  "Precio Nuevo Gasoleo A": "newGasoleoAPrice",
+  "Provincia": "province",
+  "Remisión": "remission",
+  "Rótulo": "label",
+  "Tipo Venta Recomendado": "recommendedSaleType",
+  "Tipo Venta": "saleType",
+};
