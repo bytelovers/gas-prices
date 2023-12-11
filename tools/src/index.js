@@ -52,17 +52,16 @@ const transformData = new Transform({
         ResultadoConsulta: status,
       } = data;
 
-      const eess = list
+      const stations = list
         // .filter((es) => es.IDEESS === "15667")
         .map(transformGasFields);
 
       const response = {
         date: new Date(date).toISOString(),
         status,
-        stations: eess,
+        stations,
       };
-      // console.log(data, response);
-      callback(null, JSON.stringify(eess, null, 2));
+      callback(null, JSON.stringify(response, null, 2));
     } catch (error) {
       console.error(error);
     }
@@ -70,18 +69,23 @@ const transformData = new Transform({
 });
 
 const generateGasData = async (dataStream) =>
-  pipeline(dataStream, transformData, /*writeStream,*/ (err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log("Data fetched and written to file");
+  pipeline(
+    dataStream,
+    transformData,
+    // writeStream,
+    (err) => {
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("Data fetched and written to file");
+      }
     }
-  });
+  );
 
 const init = async () => {
   const gasData = await fetchGasData();
   const stream = Readable.from(await generateGasData(gasData));
-  
+
   let data = '';
   stream.on('data', (chunk) => {
     data += chunk;
@@ -90,6 +94,7 @@ const init = async () => {
   stream.on('end', () => {
     const jsonData = JSON.parse(data);
     const parser = new CSVParser();
+
     const csv = parser.parse(jsonData);
 
     fs.writeFileSync('data.csv', csv);
