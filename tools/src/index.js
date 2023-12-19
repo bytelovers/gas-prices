@@ -7,6 +7,7 @@ import { Readable, Transform, pipeline } from "node:stream";
 import { Parser as CSVParser } from "@json2csv/plainjs";
 
 import { GAS_PRICES_URL } from "./constants.js";
+import { getGasDateTime } from "./helpers.js";
 import { transformGasFields } from "./transformers.js";
 
 const writeStream = fs.createWriteStream("data.json");
@@ -34,7 +35,7 @@ const fetchURLStream = async () => {
 const fetchGasData = async () => {
   try {
     // const res = await fetchURLStream();
-    const res = await fetchFileStream();
+    const res = await fetchURLStream();
 
     return res;
   } catch (error) {
@@ -57,12 +58,12 @@ const transformData = new Transform({
         .map(transformGasFields);
 
       const response = {
-        date: new Date(date).toISOString(),
+        date: getGasDateTime(date).toISOString(),
         status,
         stations: eess,
       };
       // console.log(data, response);
-      callback(null, JSON.stringify(eess, null, 2));
+      callback(null, JSON.stringify(response, null, 2));
     } catch (error) {
       console.error(error);
     }
@@ -70,7 +71,7 @@ const transformData = new Transform({
 });
 
 const generateGasData = async (dataStream) =>
-  pipeline(dataStream, transformData, /*writeStream,*/ (err) => {
+  pipeline(dataStream, transformData, writeStream, (err) => {
     if (err) {
       console.error(err);
     } else {
@@ -80,21 +81,22 @@ const generateGasData = async (dataStream) =>
 
 const init = async () => {
   const gasData = await fetchGasData();
-  const stream = Readable.from(await generateGasData(gasData));
+  await generateGasData(gasData);
+  //const stream = Readable.from(await generateGasData(gasData));
   
-  let data = '';
-  stream.on('data', (chunk) => {
-    data += chunk;
-  });
+  // let data = '';
+  // stream.on('data', (chunk) => {
+  //   data += chunk;
+  // });
 
-  stream.on('end', () => {
-    const jsonData = JSON.parse(data);
-    const parser = new CSVParser();
-    const csv = parser.parse(jsonData);
+  // stream.on('end', () => {
+  //   const jsonData = JSON.parse(data);
+  //   const parser = new CSVParser();
+  //   const csv = parser.parse(jsonData);
 
-    fs.writeFileSync('data.csv', csv);
-    //console.log(result);
-  });
+  //   fs.writeFileSync('data.csv', csv);
+  //   //console.log(result);
+  // });
   
 };
 
