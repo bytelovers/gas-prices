@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "tools:start": "npm --prefix ./tools start"
+  }
+}
