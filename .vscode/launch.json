@@ -13,6 +13,16 @@
       ],
       "program": "${workspaceRoot}/tools/src/index.js",
       "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.12.1/bin/node",
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Record in db",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceRoot}/tools/src/record_in_db.js",
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.12.1/bin/node",
     }
   ]
 }
