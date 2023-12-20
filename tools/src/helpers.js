@@ -1,3 +1,4 @@
+import { STATION_FIELDS } from './constants.js';
 export const getGasDateTime = (str) => {
   // Dividir la cadena en componentes de fecha y hora
   const [date, time] = str.split(" ");
@@ -11,3 +12,23 @@ export const getGasDateTime = (str) => {
 
   return dateTime;
 };
+
+export const getStationPrices = station => {
+  const _result = {}
+  for (const k of Object.keys(station)) {
+    if (k.toLowerCase().includes('price')) {
+      _result[k] = station[k] === ''
+        ? 0
+        : parseFloat(station[k].replace(',', '.'));
+    }
+  }
+  return _result;
+}
+
+export const getStationData = station => {
+  const _result = {};
+  STATION_FIELDS.forEach(field => {
+    _result[field] = station[field]
+  })
+  return _result;
+}

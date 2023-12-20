@@ -12,7 +12,7 @@
         "<node_internals>/**"
       ],
       "program": "${workspaceRoot}/tools/src/index.js",
-      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.19.0/bin/node",
+      "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v18.12.1/bin/node",
     }
   ]
 }
