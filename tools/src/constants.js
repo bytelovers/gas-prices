@@ -89,18 +89,70 @@ export const FIELDS = {
 export const STATION_FIELDS = [
   FIELDS.ADDRESS,
   FIELDS.CCAA_ID,
-  FIELDS.CITY,
+  // FIELDS.CITY,
   FIELDS.EESS_ID,
   FIELDS.LABEL,
   FIELDS.LATITUDE,
   FIELDS.LONGITUDE,
   FIELDS.MUNICIPALITY_ID,
-  FIELDS.MUNICIPALITY,
+  // FIELDS.MUNICIPALITY,
   FIELDS.POSTAL_CODE,
   FIELDS.PROVINCE_ID,
-  FIELDS.PROVINCE,
+  // FIELDS.PROVINCE,
   FIELDS.RECOMMENDED_SALE_TYPE,
   FIELDS.REMISSION,
   FIELDS.SALE_TYPE,
   FIELDS.SCHEDULE,
 ];
+
+export const CCAA_FIELDS = [
+  FIELDS.CCAA_ID,
+];
+
+export const MUNICIPALITY_FIELDS = [
+  FIELDS.MUNICIPALITY_ID,
+  FIELDS.MUNICIPALITY,
+];
+
+export const PROVINCE_FIELDS = [
+  FIELDS.PROVINCE_ID,
+  FIELDS.PROVINCE,
+];
+
+
+/*
+{
+      "C.P.": "02250",
+      "Dirección": "AVENIDA CASTILLA LA MANCHA, 26",
+      "Horario": "L-D: 07:00-22:00",
+      "Latitud": "39,211417",
+      "Localidad": "ABENGIBRE",
+      "Longitud (WGS84)": "-1,539167",
+      "Margen": "D",
+      "Municipio": "Abengibre",
+      "Precio Biodiesel": "",
+      "Precio Bioetanol": "",
+      "Precio Gas Natural Comprimido": "",
+      "Precio Gas Natural Licuado": "",
+      "Precio Gases licuados del petróleo": "",
+      "Precio Gasoleo A": "1,449",
+      "Precio Gasoleo B": "1,059",
+      "Precio Gasoleo Premium": "",
+      "Precio Gasolina 95 E10": "",
+      "Precio Gasolina 95 E5": "1,549",
+      "Precio Gasolina 95 E5 Premium": "",
+      "Precio Gasolina 98 E10": "",
+      "Precio Gasolina 98 E5": "",
+      "Precio Hidrogeno": "",
+      "Provincia": "ALBACETE",
+      "Remisión": "dm",
+      "Rótulo": "Nº 10.935",
+      "Tipo Venta": "P",
+      "% BioEtanol": "0,0",
+      "% Éster metílico": "0,0",
+      "IDEESS": "4375",
+      "IDMunicipio": "52",
+      "IDProvincia": "02",
+      "IDCCAA": "07"
+    },
+    */

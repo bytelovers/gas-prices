@@ -6,9 +6,9 @@ import { fileURLToPath } from "node:url";
 import { Readable, Transform, pipeline } from "node:stream";
 import { Parser as CSVParser } from "@json2csv/plainjs";
 
-import { getGasDateTime } from "./helpers.js";
-import { transformGasData, transformGasFields } from "./transformers.js";
 import { FIELDS } from "./constants.js";
+import { formatDateStr, getGasDateTime } from "./helpers.js";
+import { transformGasData, transformGasFields } from "./transformers.js";
 
 //const writeStream = fs.createWriteStream("data.json");
 
@@ -44,7 +44,7 @@ const transformData = new Transform({
 
       const eess = list
         .map(transformGasFields)
-        // .filter((es) => es[FIELDS.EESS_ID] === "15667"); // EESS San fernando
+        .filter((es) => es[FIELDS.EESS_ID] === "15667"); // EESS San fernando
 
       const response = {
         date: getGasDateTime(date).toISOString(),
@@ -52,6 +52,7 @@ const transformData = new Transform({
         data: transformGasData(eess)
       };
 
+      // Serialize Map() data
       for (const [k, v] of Object.entries(response.data)) {
         if (v instanceof Map) {
           response.data[k] = Array.from(v)
@@ -86,12 +87,12 @@ export const init = async () => {
 
   stream.on('end', () => {
     const jsonData = JSON.parse(data);
-    const dateFile = new Intl.DateTimeFormat('default',jsonData.date)
-      .format().split('/').reverse().join('');
+    const dateFile = formatDateStr(jsonData.date);
     // // const parser = new CSVParser();
     // // const csv = parser.parse(jsonData);
     
     fs.writeFileSync(`./resources/data_${dateFile}.json`, JSON.stringify(jsonData));
+    fs.writeFileSync(`./resources/data_latest.json`, JSON.stringify(jsonData));
     // fs.writeFileSync('data.csv', csv);
     //console.log(result);
   });
