@@ -16,6 +16,7 @@ export const init = async() => {
   });
 
   streamData.on('end', () => {
+    console.log(JSON.parse(data));
     console.log(data)
   })
 
