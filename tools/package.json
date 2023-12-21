@@ -11,7 +11,12 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "imports": {
+  },
   "dependencies": {
     "@json2csv/node": "^7.0.4"
+  },
+  "devDependencies": {
+    "gas-prices-db": "file:///Users/develop/Workspace/projects/gas-prices/database"
   }
 }

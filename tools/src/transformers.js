@@ -55,7 +55,7 @@ export const transformGasData = (data) => {
       getUniqueArrayObjectValuesByField(prices, FIELDS.EESS_ID),
       FIELDS.EESS_ID
     ),
-    ccaa: orderByField(getUniqueArrayObjectValuesByField(ccaa, FIELDS.CCAA_ID)),
+    ccaas: orderByField(getUniqueArrayObjectValuesByField(ccaa, FIELDS.CCAA_ID)),
     municipalities: orderByField(
       getUniqueArrayObjectValuesByField(municipalities, FIELDS.MUNICIPALITY_ID)
     ),

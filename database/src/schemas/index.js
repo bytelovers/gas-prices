@@ -1,36 +1,36 @@
 import { Schema, } from "mongoose";
 
-export const Municipality = new Schema({
-  id: String,
-  name: String,
+export const MunicipalitySchema = new Schema({
+  municipalityId: String,
+  municipality: String,
 });
 
-export const Ccaa = new Schema({
-  id: String,
-  name: String,
+export const CcaaSchema = new Schema({
+  ccaaId: String,
+  // name: String,
 });
 
-export const Province = new Schema({
-  id: String,
-  name: String,
+export const ProvinceSchema = new Schema({
+  provinceId: String,
+  province: String,
 });
 
-export const Station = new Schema({
+export const StationSchema = new Schema({
   address: String,
-  ccaa: String,
-  id: String,
+  ccaaId: String,
+  eessId: String,
   label: String,
   latitude: String,
-  loingitude: String,
-  municipality: Object,
+  longitude: String,
+  municipalityId: String,
   postalCode: String,
-  province: String,
+  provinceId: String,
   remission: String,
   saleType: String,
   schedule: String,
 });
 
-export const StationPrice = new Schema({
+export const StationPriceSchema = new Schema({
   id: String,
   date: String,
   biodieselPrice: String,

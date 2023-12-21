@@ -4,6 +4,10 @@ export const GAS_PRICES_URL = new URL(
 export const GAS_PRICES_FILE =
   "file:///Users/e058901/Workspace/sideprojects/gas-prices/tools/source.json";
 
+
+export const GAS_PRICES_DB_URL = 'mongodb://127.0.0.1:27017';
+
+
 export const CANONICAL_FIELDS = {
   "% BioEtanol": "bioethanolPercentage",
   "% Éster metílico": "methylEsterPercentage",
