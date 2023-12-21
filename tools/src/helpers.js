@@ -4,6 +4,7 @@ import { Readable } from "node:stream";
 
 import {
   CCAA_FIELDS,
+  FIELDS,
   MUNICIPALITY_FIELDS,
   PROVINCE_FIELDS,
   STATION_FIELDS,
@@ -51,7 +52,7 @@ export const getStationPrices = (station) => {
         station[k] === "" ? 0 : parseFloat(station[k].replace(",", "."));
     }
   }
-  return _result;
+  return { [FIELDS.EESS_ID]: station[FIELDS.EESS_ID], ..._result };
 };
 
 export const getStationData = (station) =>

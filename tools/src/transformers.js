@@ -1,47 +1,66 @@
-import { CANONICAL_FIELDS, FIELDS } from './constants.js';
-import { getCCAAData, getMunicipalityData, getProvinceData, getStationData, getStationPrices } from './helpers.js';
+import { CANONICAL_FIELDS, FIELDS } from "./constants.js";
+import {
+  getCCAAData,
+  getMunicipalityData,
+  getProvinceData,
+  getStationData,
+  getStationPrices,
+} from "./helpers.js";
 
 export const transformGasFields = (gasFields) => {
-    const renamedObj = {};
-    for (const [k, v] of Object.entries(gasFields)) {
-      // if ( k.includes('Precio') ) {
-      renamedObj[CANONICAL_FIELDS[k] || k] = v;
-      // }
-    }
-    return renamedObj;
-}
+  const renamedObj = {};
+  for (const [k, v] of Object.entries(gasFields)) {
+    // if ( k.includes('Precio') ) {
+    renamedObj[CANONICAL_FIELDS[k] || k] = v;
+    // }
+  }
+  return renamedObj;
+};
 
-const orderById = map => new Map([...map.entries()].sort())
+const orderByField = (obj, field) =>
+  field ? obj.sort() : obj.sort((a, b) => a[field] - b[field]);
 
-export const transformGasData = data => {
-  const stations = new Map();
-  const prices = new Map();
-  const ccaa = new Map();
-  const municipalities = new Map();
-  const provinces = new Map();
+const getUniqueArrayObjectValuesByField = (arr, field) =>
+  Array.from(new Set(arr.map((item) => item[field]))).map((itemField) =>
+    arr.find((item) => item[field] === itemField)
+  );
 
-  data.forEach(station => {
-    const stationId = station[FIELDS.EESS_ID];
+export const transformGasData = (data) => {
+  const stations = [];
+  const prices = [];
+  const ccaa = [];
+  const municipalities = [];
+  const provinces = [];
+
+  data.forEach((station) => {
     const stationData = getStationData(station);
     const stationPrices = getStationPrices(station);
     const ccaaData = getCCAAData(station);
     const municipalityData = getMunicipalityData(station);
     const provinceData = getProvinceData(station);
 
-    stations.set(stationId, stationData);
-    prices.set(stationId, stationPrices);
-    ccaa.set(station[FIELDS.CCAA_ID], ccaaData);
-    municipalities.set(station[FIELDS.MUNICIPALITY_ID], municipalityData);
-    provinces.set(station[FIELDS.PROVINCE_ID], provinceData);
-
+    stations.push(stationData);
+    prices.push(stationPrices);
+    ccaa.push(ccaaData);
+    municipalities.push(municipalityData);
+    provinces.push(provinceData);
   });
 
   return {
-    stations: orderById(stations),
-    prices: orderById(prices),
-    ccaa: orderById(ccaa),
-    municipalities: orderById(municipalities),
-    provinces: orderById(provinces),
+    stations: orderByField(
+      getUniqueArrayObjectValuesByField(stations, FIELDS.EESS_ID),
+      FIELDS.EESS_ID
+    ),
+    prices: orderByField(
+      getUniqueArrayObjectValuesByField(prices, FIELDS.EESS_ID),
+      FIELDS.EESS_ID
+    ),
+    ccaa: orderByField(getUniqueArrayObjectValuesByField(ccaa, FIELDS.CCAA_ID)),
+    municipalities: orderByField(
+      getUniqueArrayObjectValuesByField(municipalities, FIELDS.MUNICIPALITY_ID)
+    ),
+    provinces: orderByField(
+      getUniqueArrayObjectValuesByField(provinces, FIELDS.PROVINCE_ID)
+    ),
   };
-
-}
+};

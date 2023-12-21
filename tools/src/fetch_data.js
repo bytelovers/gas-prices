@@ -56,7 +56,7 @@ const transformData = new Transform({
 
       const eess = list
         .map(transformGasFields)
-        .filter((es) => es[FIELDS.EESS_ID] === "15667"); // EESS San fernando
+        // .filter((es) => es[FIELDS.EESS_ID] === "15667"); // EESS San fernando
 
       const response = {
         date: getGasDateTime(date).toISOString(),
@@ -64,12 +64,6 @@ const transformData = new Transform({
         data: transformGasData(eess)
       };
 
-      // Serialize Map() data
-      for (const [k, v] of Object.entries(response.data)) {
-        if (v instanceof Map) {
-          response.data[k] = Array.from(v)
-        }
-      }
       callback(null, JSON.stringify(response, null, 2));
     } catch (error) {
       console.error(error);
