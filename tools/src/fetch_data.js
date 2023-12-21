@@ -6,15 +6,13 @@ import { fileURLToPath } from "node:url";
 import { Readable, Transform, pipeline } from "node:stream";
 import { Parser as CSVParser } from "@json2csv/plainjs";
 
-import { GAS_PRICES_URL } from "./constants.js";
-import { getGasDateTime } from "./helpers.js";
-import { transformGasFields } from "./transformers.js";
-
-const writeStream = fs.createWriteStream("data.json");
+import { FIELDS, GAS_PRICES_URL } from "./constants.js";
+import { formatDateStr, getGasDateTime } from "./helpers.js";
+import { transformGasData, transformGasFields } from "./transformers.js";
 
 const fetchFileStream = async () => {
   const stream = fs.readFileSync(
-    `${dirname(fileURLToPath(import.meta.url))}/../source.json`,
+    `${dirname(fileURLToPath(import.meta.url))}/../resources/raw_data.json`,
     { encoding: "utf8" }
   );
   const data = JSON.parse(stream);
@@ -32,10 +30,13 @@ const fetchURLStream = async () => {
   }
 };
 
-const fetchGasData = async () => {
+const fetchGasData = async ({ type }) => {
   try {
-    const res = await fetchURLStream();
-    // const res = await fetchFileStream();
+    const types = {
+      'url': fetchURLStream,
+      'file': fetchFileStream
+    }
+    const res = await types[type]();
 
     return res;
   } catch (error) {
@@ -54,15 +55,21 @@ const transformData = new Transform({
       } = data;
 
       const eess = list
-        .filter((es) => es.eessId === "15667")
-        .map(transformGasFields);
+        .map(transformGasFields)
+        .filter((es) => es[FIELDS.EESS_ID] === "15667"); // EESS San fernando
 
       const response = {
         date: getGasDateTime(date).toISOString(),
         status,
-        stations: eess,
+        data: transformGasData(eess)
       };
-      // console.log(data, response);
+
+      // Serialize Map() data
+      for (const [k, v] of Object.entries(response.data)) {
+        if (v instanceof Map) {
+          response.data[k] = Array.from(v)
+        }
+      }
       callback(null, JSON.stringify(response, null, 2));
     } catch (error) {
       console.error(error);
@@ -71,7 +78,7 @@ const transformData = new Transform({
 });
 
 const generateGasData = async (dataStream) =>
-  pipeline(dataStream, /*transformData,*/ writeStream, (err) => {
+  pipeline(dataStream, transformData, (err) => {
     if (err) {
       console.error(err);
     } else {
@@ -79,25 +86,20 @@ const generateGasData = async (dataStream) =>
     }
   });
 
-export const init = async () => {
-  const gasData = await fetchGasData();
-  await generateGasData(gasData);
-  // const stream = Readable.from(await generateGasData(gasData));
+export const init = async (options = {}) => {
+  const gasData = await fetchGasData(options);
+  const stream = Readable.from(await generateGasData(gasData));
   
   let data = '';
-  // stream.on('data', (chunk) => {
-  //   data += chunk;
-  // });
+  stream.on('data', (chunk) => {
+    data += chunk;
+  });
 
-  // stream.on('end', () => {
-  //   const jsonData = JSON.parse(data);
-  //   // const parser = new CSVParser();
-  //   // const csv = parser.parse(jsonData);
-    
-  //   fs.writeFileSync('test.json', JSON.stringify(jsonData));
-  //   // fs.writeFileSync('data.csv', csv);
-  //   //console.log(result);
-  // });
-  
+  stream.on('end', () => {
+    const jsonData = JSON.parse(data);
+    const dateFile = formatDateStr(jsonData.date);
+
+    fs.writeFileSync(`./resources/data_${dateFile}.json`, JSON.stringify(jsonData));
+    fs.writeFileSync(`./resources/data_latest.json`, JSON.stringify(jsonData));
+  });
 };
-

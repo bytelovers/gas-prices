@@ -1,3 +1,4 @@
-import { init as loadFile } from './fetch_data_from_file.js';
+import { init } from './fetch_data.js';
 
-await loadFile();
+// await init({ type: 'file'});
+await init({ type: 'url'});
