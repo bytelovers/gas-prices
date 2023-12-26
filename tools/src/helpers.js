@@ -19,7 +19,7 @@ const extractFields = (fields = [], data) => {
 };
 
 export const formatDateStr = (dateStr) =>
-  new Intl.DateTimeFormat("default", dateStr)
+  new Intl.DateTimeFormat("es", dateStr)
     .format()
     .split("/")
     .reverse()
