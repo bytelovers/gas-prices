@@ -33,6 +33,7 @@ export const StationSchema = new Schema({
 export const StationPriceSchema = new Schema({
   id: String,
   date: String,
+  eessId: String,
   biodieselPrice: String,
   bioethanolPrice: String,
   compressedNaturalGasPrice: String,

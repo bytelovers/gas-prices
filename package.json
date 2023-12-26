@@ -1,5 +1,6 @@
 {
   "scripts": {
-    "tools:start": "npm --prefix ./tools start"
+    "tools:start": "npm --prefix ./tools start",
+    "tools:process": "npm --prefix ./tools run process"
   }
 }
